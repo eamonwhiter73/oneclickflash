@@ -1,0 +1,9 @@
+<div ng-include="'partials/navbar'"></div>
+
+<div class="wrapper">
+	<div id="please" ng-hide="currentUser"><h>PLEASE LOG IN!</h></div>
+	<div ng-show="currentUser" ng-click="go(item.link)" class="jumbotrongls" ng-repeat="item in menu2" ng-class="{active: isActive2(item.link)}">{{item.title}}
+	</div>
+</div>
+
+
