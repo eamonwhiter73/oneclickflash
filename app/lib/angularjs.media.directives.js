@@ -19,6 +19,7 @@ angular.module('angularjs.media.directives', [])
         '<object data="{{src}}" type="application/x-shockwave-flash" align="center">'+
           '<param name="allowscriptaccess" value="always" />'+
           '<param name="allowfullscreen" value="true" />'+
+          '<param name="wmode" value="direct" />'+
         '</object>',
       compile: function(elem, attrs, transcludeFn) {
         return function link (scope, element, attrs) {

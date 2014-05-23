@@ -85,11 +85,10 @@ body {
   font-family: 'Audiowide', cursive; 
   text-align: center;
   border-bottom: 1px solid #e5e5e5;
-  width: 30%;
+  width: 560px;
+  height: 560px;
   margin: 10px;
   padding-top: 30px;
-  height: 360px;
-  width: 450px;
   background-color: #F5A4CE;
   border-radius: 6px;
   margin: 0 auto;

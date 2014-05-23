@@ -5,9 +5,6 @@ var express = require('express'),
     fs = require('fs'),
     mongoose = require('mongoose');
 
-var net = require('net');
-var mySocket;
-
 /**
  * Main application file
  */
@@ -37,54 +34,23 @@ var app = express();
 require('./lib/config/express')(app);
 require('./lib/routes')(app);
 
-var server = net.createServer(function(c) { //'connection' listener
-  mySocket = c;
-  console.log('server connected');
-  mySocket.on('connect', function() {
-    console.log('server connected');
-  });
-  mySocket.on("data", onData);
+var server = require('http').createServer(app),
+    io = require('socket.io').listen(server);
+
+io.configure(function() {
+  io.set('transports', ['websocket','xhr-polling']);
+  io.set('flash policy port', 10843);
 });
-server.listen(8080, function() { //'listening' listener
-  console.log('server bound');
-});
-
-var pf = require('policyfile').createServer();
-
-pf.listen(10843, function(){
-  console.log(':3 yay')
-});
-
-function onConnect()
-{
-  console.log("Connected to Flash");
-}
-
-// When flash sends us data, this method will handle it
-function onData(d)
-{
-  
-  
-    console.log("Y position of goober(avatar) = " + d);
-    var tempD=parseInt(d);
-    //var dType=typeof tempD;
-    tempD=tempD*2;
-
-    
-    //console.log(tempD + "is a " + dType);
-    //tempD=tempD+/0;
-
-
-        //add null byte at end to conform to XMLSocket process. there are other sockets we can use, this is one.
-    mySocket.write(tempD+"\0", 'utf8');
-  
-}
-
-server.addListener("error",function(err){});
 
 // Start server
-app.listen(config.port, config.ip, function () {
+server.listen(config.port, config.ip, function () {
   console.log('Express server listening on %s:%d, in %s mode', config.ip, config.port, app.get('env'));
+});
+
+io.sockets.on('connection', function (socket) {
+  socket.on('message', function (data) {
+    console.log(data);
+  });
 });
 
 // Expose app
