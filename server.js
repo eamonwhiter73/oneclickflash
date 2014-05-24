@@ -5,6 +5,17 @@ var express = require('express'),
     fs = require('fs'),
     mongoose = require('mongoose');
 
+var mysql = require('mysql');
+
+var connection = mysql.createConnection({
+  host     : 'localhost',
+  user     : 'root',
+  password : null,
+  database: 'mysql'
+});
+
+connection.connect();
+
 /**
  * Main application file
  */
@@ -44,6 +55,7 @@ server.listen(config.port, config.ip, function () {
 
 var contestants = [];
 var score;
+var contestantstore = {username: null, score: null};
 
 io.configure(function() {
   io.set('transports', ['websocket','xhr-polling','flashsocket']);
@@ -54,7 +66,7 @@ io.sockets.on('connection', function (socket) {
   
   socket.on('message', function (data) {
     console.log(data);
-    score = data;
+    score = Number(data);
     console.log("Transfered:" + " " + score);
     socket.broadcast.emit('sendscore', score);
   })
@@ -67,9 +79,22 @@ io.sockets.on('connection', function (socket) {
     socket.emit('onContestantsListed', contestants);
   });
 
+  socket.on('turnonmysql', function(){
+    connection.connect();
+  });
+
+  socket.on('turnoffmysql', function(){
+    connection.end();
+  });
+
   socket.on('createContestant', function(data) {
+    socket.emit('turnonmysql');
     contestants.push(data);
+    contestantstore.username = data.display_name;
+    contestantstore.score = score;
+    connection.query('INSERT INTO scores SET ?', contestantstore);
     socket.broadcast.emit('onContestantCreated', data);
+    socket.emit('turnoffmysql');
   });
 
   socket.on('updateContestant', function(data){

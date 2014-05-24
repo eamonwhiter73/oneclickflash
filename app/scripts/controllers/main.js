@@ -2,7 +2,7 @@
 
 var oneclickApp = angular.module('oneclickApp');
 
-oneclickApp.controller('MainCtrl', function ($scope, $http, $location, socket) {
+oneclickApp.controller('MainCtrl', function ($route, $scope, $http, $location, socket) {
   $scope.score;
 
   $scope.contestants = []; 
@@ -68,6 +68,10 @@ oneclickApp.controller('MainCtrl', function ($scope, $http, $location, socket) {
     _resetFormValidation();
     $location.path("/leaderboard");
   };
+
+  $scope.refresh = function() {
+    $route.reload();
+  }
 
   $scope.deleteContestant = function(id) {
     $scope.handleDeleteContestant(id);
