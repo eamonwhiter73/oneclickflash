@@ -12,7 +12,7 @@ oneclickApp.controller('MainCtrl', function ($route, $scope, $http, $location, s
     console.log(data);
   }) 
 
-  socket.emit('listContestants');
+  socket.emit('listContestantsInit');
 
   // Incoming
   socket.on('onContestantsListed', function(data) {
@@ -20,7 +20,7 @@ oneclickApp.controller('MainCtrl', function ($route, $scope, $http, $location, s
   });
 
   socket.on('onContestantCreated', function(data) {
-    $scope.contestants.push(data);
+    $scope.contestants.push.apply($scope.contestants, data);
   });
 
   socket.on('onContestantDeleted', function(data) {

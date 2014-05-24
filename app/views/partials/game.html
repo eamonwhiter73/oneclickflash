@@ -2,17 +2,17 @@
 
 <div class="wrapper">
 	<div class="jumbotrongame">
-	  <flash checkPolicyFile="true" width="500" height="500" src="files/Startup.swf"></flash>
-    <button href="/#!/leaderboard" ng-click="createContestant()" class="btn btn-success" 
-        ng-disabled="
-            ldrbd.contestantName.$error.required || 
-            ldrbd.contestantScore.$error.required
-        ">
-        Submit Score
-    </button>
-    <button href="/#!/game" ng-click="refresh()" class="btn btn-success" 
-        ng-disabled="">
-        Play Again
-    </button>
+	    <flash checkPolicyFile="true" width="500" height="500" src="files/Startup.swf"></flash>
+        <button href="/#!/leaderboard" ng-click="createContestant()" class="btn btn-success" 
+            ng-disabled="
+                ldrbd.contestantName.$error.required || 
+                ldrbd.contestantScore.$error.required
+            ">
+            Submit Score
+        </button>
+        <button href="/#!/game" ng-click="refresh()" class="btn btn-success" 
+            ng-disabled="">
+            Play Again
+        </button>
 	</div>
 </div>
