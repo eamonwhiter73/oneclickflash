@@ -3,7 +3,7 @@ var oneclickApp = angular.module('oneclickApp', [
   'ngCookies',
   'ngResource',
   'ngSanitize',
-  'ngRoute'
+  'ngRoute',
 ]);
 
 oneclickApp.config(function ($routeProvider, $locationProvider, $httpProvider) {
@@ -19,7 +19,10 @@ oneclickApp.config(function ($routeProvider, $locationProvider, $httpProvider) {
     })
     .when('/leaderboard', {
       templateUrl: 'partials/leaderboard',
-      controller: 'MainCtrl'
+    })
+    .when('/admin', {
+      templateUrl: 'partials/admin',
+      authenticate: true
     })
     .when('/store', {
       templateUrl: 'partials/store',
@@ -59,7 +62,6 @@ oneclickApp.config(function ($routeProvider, $locationProvider, $httpProvider) {
       };
     }]);
 });
-
 /*oneclickApp.controller('navbarCtrl', function($scope, $location) {
   $scope.isActive = function(path) {
     return $location.path() === path;

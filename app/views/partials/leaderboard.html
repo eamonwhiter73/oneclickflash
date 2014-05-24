@@ -1,3 +1,41 @@
 <div ng-include="'partials/navbar.html'"></div>
 
-<div class="jumbotronpage"></div>
+<div class="jumbotronpage">
+	<div data-ng-controller="MainCtrl" role="application" class="test-surface">
+	    <div class="ldrbd-widget" role="widget" data-ng-cloak>
+	        <header role="heading">
+	            <h1 class="widget-title">Leaderboard</h1>
+	        </header>
+	        <div class="ldr-list-wrapper" role="structure">
+	            <div class="ldr-list table table-hover" role="grid">
+	                
+	                <div class="thead" role="rowheader">
+	                    <div class="tr" role="row">
+	                        <div class="th pic"></div>
+	                        <div class="th name"><div class="clip-text">Contestant</div></div>
+	                        <div class="th score"><div class="clip-text">Score</div></div>
+	                    </div>
+	                </div>
+
+	                <div class="tbody" role="rowgroup">
+	                    <div class="tr" data-ng-repeat="contestant in contestants | orderBy:'-score' track by $index" data-contestant="contestant" role="row" ng-cloak>
+	                        <div class="td pic" role="gridcell"><figure class="thumbnail"></figure></div>
+	                        <div class="td name" role="gridcell" title="{{contestant.display_name}}">
+	                            <div class="clip-text">{{contestant.display_name}}</div>
+	                        </div>
+	                        <div class="td score" role="gridcell" title="{{contestant.score}}"><div class="clip-text">{{contestant.score}}</div></div>
+	                    </div>
+	                </div>
+	                
+	            </div>
+
+	            <footer role="status">
+	                &copy; 2013 Simpulton and Company
+	            </footer>
+
+	        </div>
+	    </div>
+
+    <script src="/js/leader-board.js"></script> 
+	</div>
+</div>

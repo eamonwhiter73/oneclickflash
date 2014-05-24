@@ -20,6 +20,7 @@ angular.module('angularjs.media.directives', [])
           '<param name="allowscriptaccess" value="always" />'+
           '<param name="allowfullscreen" value="true" />'+
           '<param name="wmode" value="direct" />'+
+          '<param name="expressInstallSwfurl" value="files/playerProductInstall.swf" />'+
         '</object>',
       compile: function(elem, attrs, transcludeFn) {
         return function link (scope, element, attrs) {
