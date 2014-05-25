@@ -69,6 +69,7 @@ io.sockets.on('connection', function (socket) {
   
   var contestants = [];
   var contestantsinter = [];
+  var contestantsexp = []
   var scoreforsend;
 
   socket.on('listContestantsInit', function(data){
@@ -84,22 +85,6 @@ io.sockets.on('connection', function (socket) {
             contestants[i] = rows[i];
         }
     });
-
-    /*var queryString3 = 'SELECT id FROM scores';
-     
-    connection.query(queryString3, function(err, rows, fields) {
-        if (err) throw err;
-     
-        for (var i in rows) {
-            ids[i] = rows[i];
-        }
-    });*/
-
-    /*for(var x = 0; x < ids.length; x++) {
-      contestants[x].id = ids[x];
-      contestants[x].display_name = usernames[x];
-      contestants[x].score = scores[x];
-    }*/
 
     socket.emit('onContestantsListed', contestants);
     socket.emit('turnoffmysql');
@@ -125,6 +110,24 @@ io.sockets.on('connection', function (socket) {
   /*socket.on('listContestants', function(data) {
     socket.emit('onContestantsListed', contestants);
   });*/
+
+socket.on('listContestantsInitExp', function(data){
+
+    socket.emit('turnonmysql');
+
+    var queryString2 = 'SELECT * FROM scoresexp';
+     
+    connection.query(queryString2, function(err, rows, fields) {
+        if (err) throw err;
+     
+        for (var i in rows) {
+            contestantsexp[i] = rows[i];
+        }
+    });
+
+    socket.emit('onContestantsListedExp', contestantsexp);
+    socket.emit('turnoffmysql');
+  });
 
   socket.on('turnonmysql', function(){
     connection.connect();
@@ -174,6 +177,23 @@ io.sockets.on('connection', function (socket) {
     contestantsinter.push(contestantstore);
     connection.query('INSERT INTO scoresinter SET ?', contestantstore);
     socket.broadcast.emit('onContestantCreatedInter', data);
+    socket.emit('turnoffmysql');
+  });
+
+  socket.on('createContestantExp', function(data) {
+    var contestantstore = {id: null, display_name: null, score: null};
+
+    socket.emit('turnonmysql');
+    /*ids.push(data.id);
+    names.push(data.display_name);
+    scores.push(score);*/
+    contestantstore.id = data.id
+    contestantstore.display_name = data.display_name;
+    contestantstore.score = data.score;
+
+    contestantsexp.push(contestantstore);
+    connection.query('INSERT INTO scoresexp SET ?', contestantstore);
+    socket.broadcast.emit('onContestantCreatedExp', data);
     socket.emit('turnoffmysql');
   });
 

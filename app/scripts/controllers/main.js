@@ -105,7 +105,7 @@ oneclickApp.controller('MainCtrl', function ($route, $scope, $http, $location, s
 
         console.log("here in exp");
 
-        $scope.contestantsinter.push(contestant);
+        $scope.contestantsexp.push(contestant);
         socket.emit('createContestantExp', contestant);
 
         _resetFormValidation();
