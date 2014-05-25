@@ -2,20 +2,26 @@
 
 var oneclickApp = angular.module('oneclickApp');
 
+oneclickApp.factory('mysocket', function (socketFactory) {
+  mysocket = socketFactory()
+  return mysocket;
+});
+
 oneclickApp.controller('MainCtrl', function ($route, $scope, $http, $location, socket) {
+  
   $scope.score;
 
   $scope.contestants = [];
   $scope.contestantsinter = [];
   $scope.contestantsexp = [];
 
-  socket.emit('listContestantsInit', $scope.contestants);
-  socket.emit('listContestantsInitInter', $scope.contestantsinter);
-  socket.emit('listContestantsInitExp', $scope.contestantsexp);
+  socket.emit('initleader', $scope.contestants);
 
   // Incoming
   socket.on('onContestantsListed', function(data) {
-    $scope.contestants.push.apply($scope.contestants, data);
+    //$scope.$apply(function () {
+        $scope.contestants.push.apply($scope.contestants, data);
+    //});
   });
 
   socket.on('onContestantsListedInter', function(data) {
@@ -129,6 +135,18 @@ oneclickApp.controller('MainCtrl', function ($route, $scope, $http, $location, s
     $location.path("/gameexp");
   }
 
+  $scope.goToInterLead = function() {
+    $location.path("/leaderboardinter");
+  }
+
+  $scope.goToBegLead = function() {
+    $location.path("/leaderboard");
+  }
+  
+  $scope.goToExpLead = function() {
+    $location.path("/leaderboardexp");
+  }
+
   $scope.deleteContestant = function(id) {
     $scope.handleDeleteContestant(id);
 
@@ -157,7 +175,7 @@ oneclickApp.controller('MainCtrl', function ($route, $scope, $http, $location, s
     'link': '/game'
   }, {
     'title': 'Leaderboards',
-    'link': '/leaderboard'
+    'link': '/leaderboard',
   }, {
     'title': 'Store',
     'link': '/store'
@@ -233,7 +251,7 @@ oneclickApp.directive('contestant', function(socket) {
   };
 });
 
-oneclickApp.factory('socket', function($rootScope) {
+/*oneclickApp.factory('socket', function($rootScope) {
   var socket = io.connect();
   return {
     on: function(eventName, callback) {
@@ -255,4 +273,8 @@ oneclickApp.factory('socket', function($rootScope) {
       });
     }
   };
+});*/
+
+oneclickApp.factory('socket', function (socketFactory) {
+  return socketFactory();
 });

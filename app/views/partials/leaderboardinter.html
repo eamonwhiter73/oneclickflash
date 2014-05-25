@@ -1,10 +1,21 @@
 <div ng-include="'partials/navbar.html'"></div>
 
-<div class="jumbotronpage">
-	<div data-ng-controller="MainCtrl" class="test-surface">
+<script>
+      var socket = io.connect('http://localhost');
+      socket.emit('listContestantsInitInter');
+</script>
+
+<div data-ng-controller="MainCtrl" class="jumbotronpage">
+	<button href="/#!/leaderboard" ng-click="goToBegLead()" class="btn btn-success">
+        Beginner
+    </button>
+    <button href="/#!/leaderboardexp" ng-click="goToExpLead()" class="btn btn-success">
+        Expert
+    </button>
+	<div class="test-surface">
 	    <div class="ldrbd-widget" role="widget" data-ng-cloak>
 	        <header role="heading">
-	            <h1 class="widget-title">Leaderboard</h1>
+	            <h1 class="widget-title">Intermediate Leaderboard</h1>
 	        </header>
 	        <div class="ldr-list-wrapper" role="structure">
 	            <div class="ldr-list table table-hover" role="grid">

@@ -4,6 +4,7 @@ var oneclickApp = angular.module('oneclickApp', [
   'ngResource',
   'ngSanitize',
   'ngRoute',
+  'btford.socket-io'
 ]);
 
 oneclickApp.config(function ($routeProvider, $locationProvider, $httpProvider) {
@@ -27,12 +28,14 @@ oneclickApp.config(function ($routeProvider, $locationProvider, $httpProvider) {
     })
     .when('/leaderboard', {
       templateUrl: 'partials/leaderboard',
+      controller: 'MainCtrl',
+
     })
     .when('/leaderboardinter', {
       templateUrl: 'partials/leaderboardinter',
     })
     .when('/leaderboardexp', {
-      templateUrl: 'partials/leaderboardinter',
+      templateUrl: 'partials/leaderboardexp',
     })
     .when('/admin', {
       templateUrl: 'partials/admin',

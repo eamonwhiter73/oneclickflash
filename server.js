@@ -58,19 +58,18 @@ io.configure(function() {
   io.set('flash policy port', 10843);
 });
 
+var contestants = [];
+var contestantsinter = [];
+var contestantsexp = []
+var scoreforsend;
+
 io.sockets.on('connection', function (socket) {
   
   socket.on('message', function (data) {
-    console.log(data);
     scoreforsend = Number(data);
     console.log("Transfered:" + " " + scoreforsend);
     socket.broadcast.emit('sendscore', scoreforsend);
   })
-  
-  var contestants = [];
-  var contestantsinter = [];
-  var contestantsexp = []
-  var scoreforsend;
 
   socket.on('listContestantsInit', function(data){
 
@@ -107,9 +106,6 @@ io.sockets.on('connection', function (socket) {
     socket.emit('onContestantsListedInter', contestantsinter);
     socket.emit('turnoffmysql');
   });
-  /*socket.on('listContestants', function(data) {
-    socket.emit('onContestantsListed', contestants);
-  });*/
 
 socket.on('listContestantsInitExp', function(data){
 
@@ -159,7 +155,7 @@ socket.on('listContestantsInitExp', function(data){
 
     contestants.push(contestantstore);
     connection.query('INSERT INTO scores SET ?', contestantstore);
-    socket.broadcast.emit('onContestantCreated', data);
+    socket.emit('onContestantCreated', data);
     socket.emit('turnoffmysql');
   });
 
