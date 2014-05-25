@@ -1,17 +1,16 @@
 <div ng-include="'partials/navbar.html'"></div>
 
 <script>
-      var socket = io.connect('http://localhost');
-      socket.emit('listContestantsInit');
+      //socket.emit('listContestantsInit');
 </script>
 
-<div class="jumbotronpage">
-	<button href="/#!/leaderboardinter" ng-click="goToInterLead()" class="btn btn-success">
+<div data-ng-controller="BegCtrl" role="application" class="jumbotronpage">
+	<a href="/#!/leaderboardinter" class="btn btn-success">
         Intermediate
-    </button>
-    <button href="/#!/leaderboardexp" ng-click="goToExpLead()" class="btn btn-success">
+    </a>
+    <a href="/#!/leaderboardexp" class="btn btn-success">
         Expert
-    </button>
+    </a>
 	<div class="test-surface">
 	    <div class="ldrbd-widget" role="widget" data-ng-cloak>
 	        <header role="heading">

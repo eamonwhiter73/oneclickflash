@@ -60,7 +60,7 @@ io.configure(function() {
 
 var contestants = [];
 var contestantsinter = [];
-var contestantsexp = []
+var contestantsexp = [];
 var scoreforsend;
 
 io.sockets.on('connection', function (socket) {
@@ -68,10 +68,17 @@ io.sockets.on('connection', function (socket) {
   socket.on('message', function (data) {
     scoreforsend = Number(data);
     console.log("Transfered:" + " " + scoreforsend);
-    socket.broadcast.emit('sendscore', scoreforsend);
-  })
+  });
 
-  socket.on('listContestantsInit', function(data){
+  socket.on('requestscore', function(){
+    socket.emit('sendscore', scoreforsend);
+  });
+
+  /*socket.emit('listContestantsInitClient', contestants);
+  socket.emit('listContestantsInitInterClient', contestantsinter);
+  socket.emit('listContestantsInitExpClient', contestantsexp);*/
+
+  socket.on('listContestantsInit', function() {
 
     socket.emit('turnonmysql');
 
@@ -89,7 +96,7 @@ io.sockets.on('connection', function (socket) {
     socket.emit('turnoffmysql');
   });
 
-  socket.on('listContestantsInitInter', function(data){
+  socket.on('listContestantsInitInter', function() {
 
     socket.emit('turnonmysql');
 
@@ -107,22 +114,22 @@ io.sockets.on('connection', function (socket) {
     socket.emit('turnoffmysql');
   });
 
-socket.on('listContestantsInitExp', function(data){
+  socket.on('listContestantsInitExp', function() {
 
-    socket.emit('turnonmysql');
+      socket.emit('turnonmysql');
 
-    var queryString2 = 'SELECT * FROM scoresexp';
-     
-    connection.query(queryString2, function(err, rows, fields) {
-        if (err) throw err;
-     
-        for (var i in rows) {
-            contestantsexp[i] = rows[i];
-        }
-    });
+      var queryString2 = 'SELECT * FROM scoresexp';
+       
+      connection.query(queryString2, function(err, rows, fields) {
+          if (err) throw err;
+       
+          for (var i in rows) {
+              contestantsexp[i] = rows[i];
+          }
+      });
 
-    socket.emit('onContestantsListedExp', contestantsexp);
-    socket.emit('turnoffmysql');
+      socket.emit('onContestantsListedExp', contestantsexp);
+      socket.emit('turnoffmysql');
   });
 
   socket.on('turnonmysql', function(){

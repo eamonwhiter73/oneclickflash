@@ -2,18 +2,18 @@
 
 <div class="wrapper">
 	<div class="jumbotrongame">
-        <button href="/#!/game" ng-click="goToBeg()" class="btn btn-success">
+        <a href="/#!/game" class="btn btn-success">
             Beginner
-        </button>
-        <button href="/#!/gameinter" ng-click="goToInter()" class="btn btn-success">
+        </a>
+        <a href="/#!/gameinter" class="btn btn-success">
             Intermediate
-        </button>
+        </a>
 	    <flash checkPolicyFile="true" width="500" height="500" src="files/Startup.swf"></flash>
-        <button href="/#!/leaderboardexp" ng-click="createContestant()" class="btn btn-success">
+        <a href="/#!/leaderboardexp" ng-click="createContestant()" class="btn btn-success">
             Submit Score
-        </button>
-        <button href="/#!/gameexp" ng-click="refresh()" class="btn btn-success">
+        </a>
+        <a ng-click="refresh()" class="btn btn-success">
             Play Again
-        </button>
+        </a>
 	</div>
 </div>
