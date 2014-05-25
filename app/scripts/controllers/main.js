@@ -5,27 +5,46 @@ var oneclickApp = angular.module('oneclickApp');
 oneclickApp.controller('MainCtrl', function ($route, $scope, $http, $location, socket) {
   $scope.score;
 
-  $scope.contestants = []; 
+  $scope.contestants = [];
+  $scope.contestantsinter = [];
+  $scope.contestantsexp = [];
 
-  socket.on('message', function(data) {
-    $scope.scorefordisplay = data;
-    console.log(data);
-  }) 
-
-  socket.emit('listContestantsInit');
+  socket.emit('listContestantsInit', $scope.contestants);
+  socket.emit('listContestantsInitInter', $scope.contestantsinter);
+  socket.emit('listContestantsInitExp', $scope.contestantsexp);
 
   // Incoming
   socket.on('onContestantsListed', function(data) {
     $scope.contestants.push.apply($scope.contestants, data);
   });
 
+  socket.on('onContestantsListedInter', function(data) {
+    $scope.contestantsinter.push.apply($scope.contestantsinter, data);
+  });
+
+  socket.on('onContestantsListedExp', function(data) {
+    $scope.contestantsinter.push.apply($scope.contestantsexp, data);
+  });
+
   socket.on('onContestantCreated', function(data) {
-    $scope.contestants.push.apply($scope.contestants, data);
+    $scope.contestants.push.apply(data);
+  });
+
+  socket.on('onContestantCreatedInter', function(data) {
+    $scope.contestantsinter.push.apply(data);
+  });
+
+  socket.on('onContestantCreatedExp', function(data) {
+    $scope.contestantsexp.push.apply(data);
   });
 
   socket.on('onContestantDeleted', function(data) {
     $scope.handleDeleteContestant(data.id);
   });
+
+  socket.on('sendscore', function(data){
+    $scope.score = data;
+  })
 
   var _resetFormValidation = function() {
     $("input:first").focus();
@@ -46,15 +65,13 @@ oneclickApp.controller('MainCtrl', function ($route, $scope, $http, $location, s
       // or server returns response with an error status.
     });
 
-  socket.on('sendscore', function(data) {
+  /*socket.on('sendscore', function(data) {
     console.log(data);
     $scope.score = data;
-  });
+  });*/
 
   // Outgoing
   $scope.createContestant = function() {
-    
-    socket.emit('sendscore');
 
     var contestant = {
       id: $scope.userstore.email,
@@ -62,15 +79,54 @@ oneclickApp.controller('MainCtrl', function ($route, $scope, $http, $location, s
       score: $scope.score
     };
 
-    $scope.contestants.push(contestant);
-    socket.emit('createContestant', contestant);
+    if($location.path() == '/game') {
 
-    _resetFormValidation();
-    $location.path("/leaderboard");
+      console.log("here in beginner");
+
+      $scope.contestants.push(contestant);
+      socket.emit('createContestant', contestant);
+
+      _resetFormValidation();
+      $location.path("/leaderboard");
+    } 
+
+    if($location.path() == '/gameinter') {
+
+        console.log("here in inter");
+
+        $scope.contestantsinter.push(contestant);
+        socket.emit('createContestantInter', contestant);
+
+        _resetFormValidation();
+        $location.path("/leaderboardinter");
+    } 
+
+    if($location.path() == '/gameexp') {
+
+        console.log("here in exp");
+
+        $scope.contestantsinter.push(contestant);
+        socket.emit('createContestantExp', contestant);
+
+        _resetFormValidation();
+        $location.path("/leaderboardexp");
+    } 
   };
 
   $scope.refresh = function() {
     $route.reload();
+  }
+
+  $scope.goToInter = function() {
+    $location.path("/gameinter");
+  }
+
+  $scope.goToBeg = function() {
+    $location.path("/game");
+  }
+  
+  $scope.goToExp = function() {
+    $location.path("/gameexp");
   }
 
   $scope.deleteContestant = function(id) {

@@ -17,8 +17,22 @@ oneclickApp.config(function ($routeProvider, $locationProvider, $httpProvider) {
       templateUrl: 'partials/game',
       controller: 'MainCtrl'
     })
+    .when('/gameinter', {
+      templateUrl: 'partials/gameinter',
+      controller: 'MainCtrl'
+    })
+    .when('/gameexp', {
+      templateUrl: 'partials/gameexp',
+      controller: 'MainCtrl'
+    })
     .when('/leaderboard', {
       templateUrl: 'partials/leaderboard',
+    })
+    .when('/leaderboardinter', {
+      templateUrl: 'partials/leaderboardinter',
+    })
+    .when('/leaderboardexp', {
+      templateUrl: 'partials/leaderboardinter',
     })
     .when('/admin', {
       templateUrl: 'partials/admin',
