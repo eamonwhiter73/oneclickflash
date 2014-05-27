@@ -31,8 +31,10 @@ oneclickApp.controller('BegCtrl', function ($route, $scope, $http, $location, so
   });
 
   socket.on('sendscore', function(data){
+    console.log(data);
     $scope.score = data;
-  })
+    console.log($scope.score + " after");
+  });
 
   var _resetFormValidation = function() {
     $("input:first").focus();
@@ -62,6 +64,8 @@ oneclickApp.controller('BegCtrl', function ($route, $scope, $http, $location, so
   $scope.createContestant = function() {
 
     socket.emit('requestscore');
+
+    console.log("this is needed" + " " + $scope.score);
 
     var contestant = {
       id: $scope.userstore.email,

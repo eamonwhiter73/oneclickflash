@@ -66,11 +66,13 @@ var scoreforsend;
 io.sockets.on('connection', function (socket) {
   
   socket.on('message', function (data) {
-    scoreforsend = Number(data);
+    scoreforsend = data;
     console.log("Transfered:" + " " + scoreforsend);
+    //socket.emit('scoreforsend', scoreforsend);
   });
 
   socket.on('requestscore', function(){
+    console.log(scoreforsend);
     socket.emit('sendscore', scoreforsend);
   });
 
@@ -158,11 +160,11 @@ io.sockets.on('connection', function (socket) {
     scores.push(score);*/
     contestantstore.id = data.id;
     contestantstore.display_name = data.display_name;
-    contestantstore.score = data.score;
+    contestantstore.score = scoreforsend;
 
     contestants.push(contestantstore);
     connection.query('INSERT INTO scores SET ?', contestantstore);
-    socket.emit('onContestantCreated', data);
+    socket.emit('onContestantCreated', contestantstore);
     socket.emit('turnoffmysql');
   });
 
@@ -175,11 +177,11 @@ io.sockets.on('connection', function (socket) {
     scores.push(score);*/
     contestantstore.id = data.id
     contestantstore.display_name = data.display_name;
-    contestantstore.score = data.score;
+    contestantstore.score = scoreforsend;
 
     contestantsinter.push(contestantstore);
     connection.query('INSERT INTO scoresinter SET ?', contestantstore);
-    socket.broadcast.emit('onContestantCreatedInter', data);
+    socket.broadcast.emit('onContestantCreatedInter', contestantstore);
     socket.emit('turnoffmysql');
   });
 
@@ -192,11 +194,11 @@ io.sockets.on('connection', function (socket) {
     scores.push(score);*/
     contestantstore.id = data.id
     contestantstore.display_name = data.display_name;
-    contestantstore.score = data.score;
+    contestantstore.score = scoreforsend;
 
     contestantsexp.push(contestantstore);
     connection.query('INSERT INTO scoresexp SET ?', contestantstore);
-    socket.broadcast.emit('onContestantCreatedExp', data);
+    socket.broadcast.emit('onContestantCreatedExp', contestantstore);
     socket.emit('turnoffmysql');
   });
 
