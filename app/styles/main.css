@@ -72,8 +72,8 @@ body {
   float: left;
   text-align: center;
   border-bottom: 1px solid #e5e5e5;
-  width: 30%;
-  margin: 10px;
+  width: 200px;
+  margin-left: 30px;
   padding-top: 30px;
   height: 300px;
   background-color: #F5A4CE;
@@ -99,8 +99,8 @@ body {
   float: left;
   text-align: center;
   border-bottom: 1px solid #e5e5e5;
-  width: 30%;
-  margin: 10px;
+  width: 200px;
+  margin-left: 30px;
   height: 300px;
   background-color: #F5A4CE;
   cursor: pointer;
@@ -127,7 +127,7 @@ body {
   width: 100%;
   margin: 10px;
   padding-top: 30px;
-  height: 300px;
+  height: 100%;
   background-color: #F5A4CE;
   cursor: pointer;
   border-radius: 6px;
@@ -228,6 +228,7 @@ a:hover {
 
 .wrapper {
   width: 100%;
+  height: 100%;
   margin: 0 auto;
 }
 

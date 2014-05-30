@@ -10,7 +10,7 @@ var mysql = require('mysql');
 var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
-  password : null,
+  password : 'bonjour3',
   database: 'mysql'
 });
 
@@ -62,13 +62,72 @@ var contestants = [];
 var contestantsinter = [];
 var contestantsexp = [];
 var scoreforsend;
+var userinfo;
+var user = [];
+
+var http = require('http');
 
 io.sockets.on('connection', function (socket) {
   
   socket.on('message', function (data) {
-    scoreforsend = data;
-    console.log("Transfered:" + " " + scoreforsend);
-    //socket.emit('scoreforsend', scoreforsend);
+    console.log(typeof data);
+    if(typeof data == "string") {
+      console.log("inside string method");
+      user = data.split(' ');
+      console.log(user);
+      var password = user[1];
+      var username = user[0];
+
+      console.log(username);
+
+      var options = {
+        host: 'localhost',
+        port: 8000,
+        path: '/api/users/' + username,
+        method: 'GET'
+      }
+
+      //The url we want is: 'www.random.org/integers/?num=1&min=1&max=10&col=1&base=10&format=plain&rnd=new'
+
+      var callback = function(response) {
+        var str = '';
+
+        //response.setEncoding('utf8');
+
+        //another chunk of data has been recieved, so append it to `str`
+        response.on('data', function (chunk) {
+          console.log(chunk.toString('utf8'));
+          str += chunk;
+        });
+
+        console.log(str);
+
+        var temp = str.split(' ');
+
+        /*for(var i = 0; i < temp.length; i++) {
+          console.log(temp[i]);
+        }*/
+        if(temp[0] === username) {
+          console.log("USER FOUND!")
+        }
+        else {
+          console.log("User not found :(");
+        }
+
+        //the whole response has been recieved, so we just print it out here
+        response.on('end', function () {
+          console.log(str);
+        });
+      }
+
+      http.request(options, callback).end();
+    }
+    else if(typeof data === "number") {
+      scoreforsend = data;
+      console.log("Transfered:" + " " + scoreforsend);
+      //socket.emit('scoreforsend', scoreforsend);
+      console.log("something else happened...");
+    }
   });
 
   socket.on('requestscore', function(){
